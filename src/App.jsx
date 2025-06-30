@@ -3,20 +3,21 @@ import {Nav, Footer} from "./components"
 
 const App = () => {
   return (
-    <main>
+    <main className="">
       <Nav />
+      <div className="mx-15">
+        <section className="pt-16">
+          <Hero />
+        </section>
 
-      <section>
-        <Hero />
-      </section>
+        <section>
+          <Service />
+        </section>
 
-      <section>
-        <Service />
-      </section>
-
-      <section>
-        <Review/>
-      </section>
+        <section>
+          <Review/>
+        </section>
+      </div>
 
       <Footer/>
     </main>

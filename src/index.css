@@ -30,7 +30,7 @@
   /* Colors -> --color-* */
   --color-primary: #2B6E4E;
   --color-secondary-yellow: #EFFF14;
-  --color-paragraf-black: #393939;
+  --color-paragraph-black: #393939;
   --color-white-400: rgba(255, 255, 255, 0.80);
 
 /* --- Custom Heading Sizes --- */
@@ -122,5 +122,9 @@
   }
   .padding-b {
     @apply sm:pb-24 pb-12;
+  }
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 }
