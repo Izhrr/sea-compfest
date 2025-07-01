@@ -14,95 +14,51 @@ export const subscriptionAPI = {
   // Create new subscription
   create: async (subscriptionData) => {
     try {
-      const response = await api.post('/subscriptions', subscriptionData);
+      const response = await api.post('/subscription', subscriptionData);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
-
-  // Get all subscriptions
+  // Get all subscriptions (optional)
   getAll: async () => {
     try {
-      const response = await api.get('/subscriptions');
+      const response = await api.get('/subscription');
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
-
-  // Get subscription by ID
-  getById: async (id) => {
-    try {
-      const response = await api.get(`/subscriptions/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  },
-
-  // Update subscription status
-  updateStatus: async (id, status) => {
-    try {
-      const response = await api.put(`/subscriptions/${id}/status`, { status });
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  }
 };
 
-// Testimonial API
-export const testimonialAPI = {
-  // Create new testimonial
-  create: async (testimonialData) => {
+// Review API
+export const reviewAPI = {
+  create: async (reviewData) => {
     try {
-      const response = await api.post('/testimonials', testimonialData);
+      const response = await api.post('/review', reviewData);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
-
-  // Get all approved testimonials
   getAll: async () => {
     try {
-      const response = await api.get('/testimonials');
+      const response = await api.get('/review');
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
-
-  // Get all testimonials for admin
-  getAllForAdmin: async () => {
-    try {
-      const response = await api.get('/testimonials/admin');
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  },
-
-  // Approve testimonial
-  approve: async (id) => {
-    try {
-      const response = await api.put(`/testimonials/${id}/approve`);
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  },
-
-  // Delete testimonial
-  delete: async (id) => {
-    try {
-      const response = await api.delete(`/testimonials/${id}`);
-      return response.data;
-    } catch (error) {
-      throw error.response?.data || error.message;
-    }
-  }
 };
 
-export default api;
+// Contact Us API
+export const contactAPI = {
+  create: async (contactData) => {
+    try {
+      const response = await api.post('/contact', contactData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+};

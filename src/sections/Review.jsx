@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   ReviewCardEnhanced,
   Carousel,
@@ -11,16 +11,32 @@ import {
   getAverageRating,
   getTotalReviewsCount
 } from "../constants";
+import { reviewAPI } from "@/services/api";
 
 const Review = () => {
+  
   const displayReviews = getApprovedReviews();
   const averageRating = getAverageRating();
   const totalReviews = getTotalReviewsCount();
 
-  // nanti integrate dengan db
-  const handleNewTestimonial = (form) => {
-    // demo aja, blm integrate db
-    alert(`Testimonial terkirim:\n${JSON.stringify(form, null, 2)}`);
+
+  const [formStatus, setFormStatus] = useState("");
+
+  // Handler submit testimonial ke API (tetap ke DB)
+  const handleNewTestimonial = async (form) => {
+    setFormStatus("loading");
+    try {
+      const response = await reviewAPI.create(form);
+      if (response.success) {
+        setFormStatus("success");
+      } else {
+        setFormStatus("error");
+      }
+    } catch {
+      setFormStatus("error");
+    } finally {
+      setTimeout(() => setFormStatus(""), 2500);
+    }
   };
 
   return (
@@ -58,7 +74,7 @@ const Review = () => {
         </div>
       </div>
 
-      {/* Carousel */}
+      {/* Carousel pakai review dummy/local */}
       <div className="w-full max-w-6xl">
         {displayReviews.length > 0 ? (
           <Carousel
@@ -83,6 +99,16 @@ const Review = () => {
       {/* Form Testimonial */}
       <div className="w-full max-w-xl mt-8">
         <TestimonialForm onSubmit={handleNewTestimonial} />
+        {formStatus === "success" && (
+          <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center">
+            Thank you! Your review has been submitted.
+          </div>
+        )}
+        {formStatus === "error" && (
+          <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center">
+            Failed to submit review. Please try again.
+          </div>
+        )}
       </div>
     </section>
   );

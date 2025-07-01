@@ -1,15 +1,39 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "../../components";
+import { contactAPI } from "../../services/api";
 
 const ContactPage = () => {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [isSent, setIsSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setForm(f => ({
+      ...f,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSent(true);
-    e.target.reset();
-    setTimeout(() => setIsSent(false), 2500);
+    setIsLoading(true);
+    setErrorMsg("");
+    try {
+      const response = await contactAPI.create(form);
+      if (response.success) {
+        setIsSent(true);
+        setForm({ name: "", email: "", message: "" });
+        setTimeout(() => setIsSent(false), 2500);
+      } else {
+        setErrorMsg(response.message || "Failed to send message.");
+      }
+    } catch (err) {
+      setErrorMsg(err.message || "Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -33,6 +57,9 @@ const ContactPage = () => {
               type="text"
               placeholder="Input Full Name.."
               className="w-full rounded-md border border-[#393939] px-4 py-2 mt-1 text-p3 font-paragraph outline-none focus:border-primary transition"
+              value={form.name}
+              onChange={handleChange}
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -46,6 +73,9 @@ const ContactPage = () => {
               type="email"
               placeholder="Input Email Address.."
               className="w-full rounded-md border border-[#393939] px-4 py-2 mt-1 text-p3 font-paragraph outline-none focus:border-primary transition"
+              value={form.email}
+              onChange={handleChange}
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -59,17 +89,22 @@ const ContactPage = () => {
               rows={6}
               placeholder="Enter your question or message.."
               className="w-full rounded-md border border-[#393939] px-4 py-2 mt-1 text-p3 font-paragraph outline-none focus:border-primary transition resize-none"
+              value={form.message}
+              onChange={handleChange}
+              disabled={isLoading}
             />
           </div>
           <Button
             type="submit"
-            label="Submit"
+            label={isLoading ? "Sending..." : "Submit"}
             backgroundColor="bg-secondary-yellow"
             textColor="text-primary"
             borderColor="border-transparent"
             fullWidth
             className="py-3 text-h5 font-heading shadow hover:bg-[#e1f300] transition"
+            disabled={isLoading}
           />
+          {errorMsg && <div className="text-red-500 text-center">{errorMsg}</div>}
         </form>
       </div>
 
