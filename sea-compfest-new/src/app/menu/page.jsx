@@ -1,6 +1,7 @@
+"use client";
 import React, { useState } from 'react';
-import { MealPlanCard, MealPlanPopUp } from '../components';
-import { mealPlans } from '../constants';
+import { MealPlanCard, MealPlanPopUp } from '../../components';
+import { mealPlans } from '../../constants';
 
 const MenuPage = () => {
   const [selectedMealPlan, setSelectedMealPlan] = useState(null);

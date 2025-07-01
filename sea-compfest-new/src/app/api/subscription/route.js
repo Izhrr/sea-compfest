@@ -1,26 +1,28 @@
-const express = require('express');
-const router = express.Router();
-const Subscription = require('../models/Subscription');
+import { NextResponse } from 'next/server';
+
+// This is a mock implementation since we don't have a database setup
+// In a real app, you would connect to a database here
+
+let subscriptions = []; // Mock storage
 
 // GET all subscriptions
-router.get('/', async (req, res) => {
+export async function GET() {
   try {
-    const subscriptions = await Subscription.find().sort({ createdAt: -1 });
-    res.json({
+    return NextResponse.json({
       success: true,
       data: subscriptions
     });
   } catch (error) {
-    res.status(500).json({
+    return NextResponse.json({
       success: false,
       message: 'Error fetching subscriptions',
       error: error.message
-    });
+    }, { status: 500 });
   }
-});
+}
 
 // POST create subscription
-router.post('/', async (req, res) => {
+export async function POST(request) {
   try {
     const {
       name,
@@ -30,104 +32,42 @@ router.post('/', async (req, res) => {
       deliveryDays,
       allergies,
       totalPrice
-    } = req.body;
+    } = await request.json();
 
     // Validasi input
     if (!name || !phoneNumber || !selectedPlan || !mealTypes || !deliveryDays) {
-      return res.status(400).json({
+      return NextResponse.json({
         success: false,
         message: 'All required fields must be provided'
-      });
+      }, { status: 400 });
     }
 
-    const subscription = new Subscription({
+    const subscription = {
+      id: Date.now().toString(), // Simple ID generation
       name,
       phoneNumber,
       selectedPlan,
       mealTypes,
       deliveryDays,
       allergies: allergies || '',
-      totalPrice
-    });
+      totalPrice,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
 
-    const savedSubscription = await subscription.save();
+    subscriptions.push(subscription);
 
-    res.status(201).json({
+    return NextResponse.json({
       success: true,
       message: 'Subscription created successfully',
-      data: savedSubscription
-    });
+      data: subscription
+    }, { status: 201 });
   } catch (error) {
-    res.status(500).json({
+    return NextResponse.json({
       success: false,
       message: 'Error creating subscription',
       error: error.message
-    });
+    }, { status: 500 });
   }
-});
-
-// GET subscription by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const subscription = await Subscription.findById(req.params.id);
-    
-    if (!subscription) {
-      return res.status(404).json({
-        success: false,
-        message: 'Subscription not found'
-      });
-    }
-
-    res.json({
-      success: true,
-      data: subscription
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Error fetching subscription',
-      error: error.message
-    });
-  }
-});
-
-// PUT update subscription status
-router.put('/:id/status', async (req, res) => {
-  try {
-    const { status } = req.body;
-    
-    if (!['pending', 'active', 'cancelled', 'completed'].includes(status)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid status value'
-      });
-    }
-
-    const subscription = await Subscription.findByIdAndUpdate(
-      req.params.id,
-      { status, updatedAt: Date.now() },
-      { new: true }
-    );
-
-    if (!subscription) {
-      return res.status(404).json({
-        success: false,
-        message: 'Subscription not found'
-      });
-    }
-
-    res.json({
-      success: true,
-      message: 'Subscription status updated successfully',
-      data: subscription
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Error updating subscription',
-      error: error.message
-    });
-  }
-});
-
-module.exports = router;
+}
