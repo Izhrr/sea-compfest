@@ -65,7 +65,8 @@ npm run start
 Create a `.env.local` file in the root directory:
 
 ```
-NEXT_PUBLIC_API_BASE_URL=/api
+MONGODB_URI=/url
+JWT_SECRET=your-secret-key
 ```
 
 ## Technologies Used
