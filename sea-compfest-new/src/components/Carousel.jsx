@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 const Carousel = ({
   items = [],
@@ -7,7 +8,7 @@ const Carousel = ({
   itemsPerView = { mobile: 1, tablet: 2, desktop: 3 },
   autoplay = { enabled: true, delay: 5000, pauseOnHover: true },
   navigation = { showArrows: true, showDots: true },
-  className = ''
+  className = '',
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(itemsPerView.desktop);
@@ -41,23 +42,22 @@ const Carousel = ({
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-    // eslint-disable-next-line
   }, [autoplay, isHovered, items.length, itemsToShow, currentIndex]);
 
-  // Berapa "slide" total: slide = halaman, per halaman = itemsToShow
+  // Total slides calculation
   const totalSlides = Math.ceil(items.length / itemsToShow);
   const currentSlide = Math.floor(currentIndex / itemsToShow);
 
-  // Geser per halaman
+  // Navigation functions
   const goToPrevious = () => {
-    setCurrentIndex(prevIndex => {
+    setCurrentIndex((prevIndex) => {
       const prevSlide = (currentSlide - 1 + totalSlides) % totalSlides;
       return prevSlide * itemsToShow;
     });
   };
 
   const goToNext = () => {
-    setCurrentIndex(prevIndex => {
+    setCurrentIndex((prevIndex) => {
       const nextSlide = (currentSlide + 1) % totalSlides;
       return nextSlide * itemsToShow;
     });
@@ -67,12 +67,14 @@ const Carousel = ({
     setCurrentIndex(slideIdx * itemsToShow);
   };
 
-  // Ambil item yang tampil di halaman ini (per halaman)
+  // Get visible items
   const getVisibleItems = () => {
     const visible = [];
     for (let i = 0; i < itemsToShow; i++) {
-      // Looping jika sisa data tidak cukup
-      visible.push(items[(currentIndex + i) % items.length]);
+      visible.push({
+        ...items[(currentIndex + i) % items.length],
+        uniqueKey: `${(currentIndex + i) % items.length}-${i}`, // Generate unique key
+      });
     }
     return visible;
   };
@@ -86,19 +88,25 @@ const Carousel = ({
       className={`relative w-full ${className}`}
       onMouseEnter={() => autoplay.pauseOnHover && setIsHovered(true)}
       onMouseLeave={() => autoplay.pauseOnHover && setIsHovered(false)}
-      style={{ minHeight: '370px' }} // Tinggi minimum agar efek card tidak terpotong
+      style={{ minHeight: '370px' }}
     >
       {/* Carousel Container */}
       <div className="overflow-visible rounded-2xl py-6 px-2 sm:px-4">
-        <div className="flex transition-transform duration-300 ease-in-out"
-          style={{ minHeight: 320 }}>
+        <div
+          className="flex transition-transform duration-300 ease-in-out"
+          style={{ minHeight: 320 }}
+        >
           {getVisibleItems().map((item, idx) => (
             <div
-              key={item.id || idx}
+              key={item.uniqueKey}
               className="flex-shrink-0 px-4"
               style={{ width: `calc(100%/${itemsToShow})` }}
             >
-              {renderItem(item, (currentIndex + idx) % items.length)}
+              {typeof renderItem === 'function' ? (
+                renderItem(item, (currentIndex + idx) % items.length)
+              ) : (
+                <div className="text-red-500">Error: renderItem is not a function</div>
+              )}
             </div>
           ))}
         </div>
@@ -111,8 +119,18 @@ const Carousel = ({
             className="absolute -left-6 sm:-left-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group"
             aria-label="Previous slide"
           >
-            <svg className="w-6 h-6 text-primary group-hover:text-paragraph-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-6 h-6 text-primary group-hover:text-paragraph-black transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
           <button
@@ -120,8 +138,18 @@ const Carousel = ({
             className="absolute -right-6 sm:-right-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group"
             aria-label="Next slide"
           >
-            <svg className="w-6 h-6 text-primary group-hover:text-paragraph-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-6 h-6 text-primary group-hover:text-paragraph-black transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         </>
@@ -145,6 +173,16 @@ const Carousel = ({
       )}
     </div>
   );
+};
+
+// Props validation
+Carousel.propTypes = {
+  items: PropTypes.array.isRequired,
+  renderItem: PropTypes.func.isRequired,
+  itemsPerView: PropTypes.object,
+  autoplay: PropTypes.object,
+  navigation: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default Carousel;
