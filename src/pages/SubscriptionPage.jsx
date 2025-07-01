@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {planOptions, mealTypeOptions, deliveryDayOptions} from "../constants"
 import { Button } from '../components';
+import { subscriptionAPI } from '../services/api';
 
 const SubscriptionPage = () => {
   // state utk form data
@@ -17,6 +18,7 @@ const SubscriptionPage = () => {
   const [errors, setErrors] = useState({});
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Check if all required fields are filled
   const isFormValid = () => {
@@ -170,7 +172,7 @@ const SubscriptionPage = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     const validationErrors = validateForm();
@@ -190,17 +192,56 @@ const SubscriptionPage = () => {
       return;
     }
 
-    // Success case
-    setErrors({});
-    setSubmitStatus('success');
-    
-    // Scroll to success message
-    setTimeout(() => {
-      const successElement = document.querySelector('.success-message');
-      if (successElement) {
-        successElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 100);
+    // Prepare data for API (jika sudah membuat API service)
+    const subscriptionData = {
+      ...formData,
+      totalPrice: calculateTotalPrice()
+    };
+
+    setIsLoading(true);
+    setSubmitStatus('');
+
+    try {
+      // Uncomment ini ketika API sudah siap
+      // const response = await subscriptionAPI.create(subscriptionData);
+      // 
+      // if (response.success) {
+        // Success case
+        setErrors({});
+        setSubmitStatus('success');
+        
+        // Scroll to success message
+        setTimeout(() => {
+          const successElement = document.querySelector('.success-message');
+          if (successElement) {
+            successElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+
+        // Reset form after successful submission
+        setTimeout(() => {
+          setFormData({
+            name: '',
+            phoneNumber: '',
+            selectedPlan: '',
+            mealTypes: [],
+            deliveryDays: [],
+            allergies: ''
+          });
+          setSubmitStatus('');
+        }, 3000);
+      // } else {
+      //   throw new Error(response.message || 'Failed to create subscription');
+      // }
+    } catch (error) {
+      console.error('Subscription submission error:', error);
+      setSubmitStatus('error');
+      setErrors({
+        submit: error.message || 'Failed to submit subscription. Please try again.'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Get selected plan data
@@ -253,9 +294,10 @@ const SubscriptionPage = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Input Full Name.."
+                  disabled={isLoading}
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                     errors.name ? 'border-red-500 error-field' : 'border-gray-300'
-                  }`}
+                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -273,9 +315,10 @@ const SubscriptionPage = () => {
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
                   placeholder="Input Phone Number.."
+                  disabled={isLoading}
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                     errors.phoneNumber ? 'border-red-500 error-field' : 'border-gray-300'
-                  }`}
+                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 />
                 {errors.phoneNumber && (
                   <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
@@ -293,7 +336,10 @@ const SubscriptionPage = () => {
                   onChange={handleInputChange}
                   placeholder="Text Here.."
                   rows="4"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  disabled={isLoading}
+                  className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
+                    isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 />
               </div>
             </div>
@@ -307,7 +353,7 @@ const SubscriptionPage = () => {
               {/* Plan Selection */}
               <div className="mb-6">
                 <label className="block font-paragraph text-paragraph-black mb-2">
-                  Plan Selection<span className="text-red-500">*</span> <span className="text-gray-500 text-sm">(choose one)</span>
+                  Plan Selection<span className="text-red-500">*</span>
                 </label>
                 <div className={`space-y-3 ${errors.selectedPlan ? 'error-field' : ''}`}>
                   {planOptions.map((plan) => (
@@ -317,10 +363,14 @@ const SubscriptionPage = () => {
                         name="selectedPlan"
                         value={plan.id}
                         checked={formData.selectedPlan === plan.id}
-                        onChange={(e) => handlePlanChange(e.target.value)}
+                        onChange={() => handlePlanChange(plan.id)}
+                        disabled={isLoading}
                         className="mr-3 text-primary focus:ring-primary"
                       />
-                      <span className="text-paragraph-black">{plan.label}</span>
+                      <div>
+                        <span className="text-paragraph-black font-semibold">{plan.name}</span>
+                        <p className="text-gray-600 text-sm">{formatCurrency(plan.price)}/serving</p>
+                      </div>
                     </label>
                   ))}
                 </div>
@@ -341,6 +391,7 @@ const SubscriptionPage = () => {
                         type="checkbox"
                         checked={formData.mealTypes.includes(meal.id)}
                         onChange={() => handleMealTypeChange(meal.id)}
+                        disabled={isLoading}
                         className="mr-3 text-primary focus:ring-primary"
                       />
                       <span className="text-paragraph-black">{meal.name}</span>
@@ -364,6 +415,7 @@ const SubscriptionPage = () => {
                         type="checkbox"
                         checked={formData.deliveryDays.includes(day.id)}
                         onChange={() => handleDeliveryDayChange(day.id)}
+                        disabled={isLoading}
                         className="mr-3 text-primary focus:ring-primary"
                       />
                       <span className="text-paragraph-black">{day.name}</span>
@@ -406,34 +458,37 @@ const SubscriptionPage = () => {
                     Order Summary
                   </h3>
                   <p className="text-gray-400 text-sm">
-                    Please fill all required fields to see your order summary
+                    Complete the form to see your order summary
                   </p>
                 </div>
               )}
 
               {/* Total Price */}
-              <div className="mb-6">
-                <h3 className="font-heading text-h4 text-paragraph-black mb-2">
-                  Total Price
-                </h3>
-                <div className={`text-2xl font-bold transition-all duration-300 ${
-                  showOrderSummary ? 'text-primary' : 'text-gray-400'
-                }`}>
-                  {showOrderSummary ? formatCurrency(calculateTotalPrice()) : 'Rp 0'}
+              {showOrderSummary && (
+                <div className="mb-6 p-4 bg-primary-50 rounded-lg animate-fadeIn">
+                  <div className="flex justify-between items-center">
+                    <span className="font-heading text-h4 text-paragraph-black">Total Price:</span>
+                    <span className="font-heading text-h3 text-primary">
+                      {formatCurrency(calculateTotalPrice())}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1">*Per month (estimated)</p>
                 </div>
-              </div>
+              )}
 
-              {/* Submit Button menggunakan komponen Button yang sudah ada */}
-              <div className={showOrderSummary ? '' : 'opacity-50 pointer-events-none'}>
-                <Button
-                  label="Subscribe Plan"
-                  fullWidth={true}
-                  onClick={handleSubmit}
-                  backgroundColor={showOrderSummary ? "bg-secondary-yellow hover:bg-yellow-400" : "bg-gray-300"}
-                  textColor={showOrderSummary ? "text-paragraph-black" : "text-gray-500"}
-                  borderColor="border-transparent"
-                />
-              </div>
+              {/* Submit Button - PERBAIKAN UTAMA DI SINI */}
+              <Button
+                label={isLoading ? 'Processing...' : 'Subscribe Now'}
+                onClick={handleSubmit}
+                fullWidth={true}
+                backgroundColor={
+                  !isFormValid() || isLoading
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-secondary-yellow hover:bg-yellow-400'
+                }
+                textColor="text-primary"
+                borderColor="border-transparent"
+              />
 
               {/* Status Messages */}
               {submitStatus === 'success' && (
@@ -456,7 +511,9 @@ const SubscriptionPage = () => {
                     </svg>
                     <span className="font-semibold">Error!</span>
                   </div>
-                  <p className="mt-1">Please fill in all required fields before submitting.</p>
+                  <p className="mt-1">
+                    {errors.submit || 'There was an error processing your subscription. Please try again.'}
+                  </p>
                 </div>
               )}
             </div>
