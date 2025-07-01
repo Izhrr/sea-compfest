@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { navLinks } from "../constants";
+import { Link, useLocation } from 'react-router-dom';
 import { hamburger } from "../assets/icons";
 
 const Nav = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -13,22 +14,61 @@ const Nav = () => {
     setIsSidebarOpen(false);
   };
 
+  // Handle utk pindah page
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/menu", label: "Menu" },
+    { href: "#subscription", label: "Subscription" },
+    { href: "#contact-us", label: "Contact Us" },
+  ];
+
+  const handleNavClick = (href) => {
+    // Handle utk page yg sama
+    if (href.startsWith('#') && location.pathname === '/') {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    closeSidebar();
+  };
+
   return (
     <>
       {/* Desktop & Mobile Header */}
-      <header className="fixed z-999 px-15 py-5 backdrop-blur-md w-full bg-[#FFFFF]">
+      <header className="fixed z-999 px-15 py-5 backdrop-blur-md w-full bg-[#FFFFFF]">
         <nav className="flex justify-between items-center text-shadow">
-          <a href="/" className="font-heading text-h5 text-primary">
+          <Link to="/" className="font-heading text-h5 text-primary">
             SEA Catering
-          </a>
+          </Link>
 
           {/* Desktop Menu */}
-          <ul className="flex justify-center items-center gap-16 max-lg:hidden">
+          <ul className="flex justify-center items-center gap-16 max-lg:hidden font-paragraph">
             {navLinks.map((item) => (
               <li key={item.label}>
-                <a href={item.href} className="font-paragraph text-paragraph-black">
-                  {item.label}
-                </a>
+                {item.href.startsWith('#') ? (
+                  <a 
+                    href={item.href} 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }}
+                    className="font-paragraph text-paragraph-black hover:text-primary transition-colors cursor-pointer"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link 
+                    to={item.href}
+                    className={`transition-colors cursor-pointer ${
+                      location.pathname === item.href 
+                        ? 'text-primary font-heading' 
+                        : 'text-paragraph-black hover:text-primary'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -65,13 +105,13 @@ const Nav = () => {
         <div className="p-6">
           {/* Sidebar Header */}
           <div className="flex justify-between items-center mb-8">
-            <a 
-              href="/" 
+            <Link 
+              to="/" 
               onClick={closeSidebar}
               className="font-heading text-h5 text-primary"
             >
               SEA Catering
-            </a>
+            </Link>
             <button
               onClick={closeSidebar}
               className="p-2 focus:outline-none"
@@ -94,16 +134,33 @@ const Nav = () => {
           </div>
 
           {/* Mobile Navigation Links */}
-          <nav className="space-y-6">
+          <nav className="space-y-6 font-paragraph">
             {navLinks.map((item) => (
               <div key={item.label} className="pb-2">
-                <a
-                  href={item.href}
-                  onClick={closeSidebar}
-                  className="font-paragraph text-paragraph-black text-lg hover:opacity-80 transition-opacity block"
-                >
-                  {item.label}
-                </a>
+                {item.href.startsWith('#') ? (
+                  <a
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }}
+                    className="font-paragraph text-paragraph-black text-lg hover:opacity-80 transition-opacity block cursor-pointer"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.href}
+                    onClick={closeSidebar}
+                    className={`text-lg transition-opacity block cursor-pointer ${
+                      location.pathname === item.href 
+                        ? 'text-primary font-heading' 
+                        : 'text-paragraph-black hover:opacity-80'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </div>
             ))}
           </nav>

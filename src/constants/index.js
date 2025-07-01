@@ -1,5 +1,6 @@
 import { meal,delivery,information } from "../assets/icons";
-import { star } from "../assets/images";
+import { star,plan1,plan2,plan3 } from "../assets/images";
+
 
 export const navLinks = [
     { href: "#home", label: "Home" },
@@ -34,4 +35,64 @@ export const reviews = [
         feedback: 'Another great review text here about the food quality and delivery service.',
         reviewer: 'John Doe',
     },
+];
+
+export const mealPlans = [
+    {
+        id: 1,
+        name: "Weight Loss Warrior",
+        price: "$50.00",
+        pricePerWeek: "(week)",
+        description: "Achieve your weight loss goals with delicious, calorie-controlled meals designed for effective fat burning and sustained energy.",
+        image: plan1,
+        keyFeatures: [
+            "Calorie-controlled portions for optimal weight management.",
+            "Rich in lean proteins and fiber for prolonged satiety.",
+            "Balanced macronutrient ratios (Carbohydrates, Protein, Fats).",
+            "Eliminates processed foods, unhealthy fats, and excessive sugars.",
+            "Expertly prepared to maximize nutrient absorption."
+        ],
+        dietaryInfo: [
+            "Estimated Daily Macros: ~1500 kcal, 40% Carb, 30% Protein, 30% Fat.",
+            "Common Allergens: Contains nuts (almond), fish (salmon). Please notify us of specific allergies."
+        ]
+    },
+    {
+        id: 2,
+        name: "Muscle Builder Pro",
+        price: "$60.00",
+        pricePerWeek: "(week)",
+        description: "Fuel your gains with high-protein, perfectly portioned meals engineered for muscle growth and recovery. Optimized macros for peak performance.",
+        image: plan2,
+        keyFeatures: [
+            "High-protein content for muscle development.",
+            "Optimized for post-workout recovery.",
+            "Balanced macronutrient ratios for performance.",
+            "Premium quality ingredients.",
+            "Expertly crafted meal combinations."
+        ],
+        dietaryInfo: [
+            "Estimated Daily Macros: ~2000 kcal, 35% Carb, 40% Protein, 25% Fat.",
+            "Common Allergens: Contains dairy, eggs. Please notify us of specific allergies."
+        ]
+    },
+    {
+        id: 3,
+        name: "Busy Bee Balance",
+        price: "$70.00",
+        pricePerWeek: "(week)",
+        description: "Save time without sacrificing health. Nutritious and convenient meals delivered daily, perfect for your demanding schedule.",
+        image: plan3,
+        keyFeatures: [
+            "Time-saving convenient meals.",
+            "Nutritionally balanced for busy lifestyles.",
+            "Fresh daily delivery.",
+            "Variety of healthy options.",
+            "Perfect portion control."
+        ],
+        dietaryInfo: [
+            "Estimated Daily Macros: ~1800 kcal, 45% Carb, 25% Protein, 30% Fat.",
+            "Common Allergens: May contain gluten, nuts. Please notify us of specific allergies."
+        ]
+    }
 ];
