@@ -1,20 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+"use client";
+import Image from 'next/image';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { hamburger } from "../assets/icons";
 
 const Nav = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
-  // Handle utk pindah page
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/menu", label: "Menu" },
@@ -23,14 +17,14 @@ const Nav = () => {
   ];
 
   const handleNavClick = (href) => {
-    // Handle utk page yg sama
-    if (href.startsWith('#') && location.pathname === '/') {
+    // Untuk anchor link (#) hanya berlaku di halaman home
+    if (href.startsWith('#') && pathname === '/') {
       const element = document.querySelector(href);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    closeSidebar();
+    setIsSidebarOpen(false);
   };
 
   return (
@@ -38,18 +32,17 @@ const Nav = () => {
       {/* Desktop & Mobile Header */}
       <header className="fixed z-999 px-15 py-5 backdrop-blur-md w-full bg-[#FFFFFF]">
         <nav className="flex justify-between items-center text-shadow">
-          <Link to="/" className="font-heading text-h5 text-primary">
+          <Link href="/" className="font-heading text-h5 text-primary">
             SEA Catering
           </Link>
-
           {/* Desktop Menu */}
           <ul className="flex justify-center items-center gap-16 max-lg:hidden font-paragraph">
             {navLinks.map((item) => (
               <li key={item.label}>
                 {item.href.startsWith('#') ? (
-                  <a 
-                    href={item.href} 
-                    onClick={(e) => {
+                  <a
+                    href={item.href}
+                    onClick={e => {
                       e.preventDefault();
                       handleNavClick(item.href);
                     }}
@@ -58,13 +51,14 @@ const Nav = () => {
                     {item.label}
                   </a>
                 ) : (
-                  <Link 
-                    to={item.href}
+                  <Link
+                    href={item.href}
                     className={`transition-colors cursor-pointer ${
-                      location.pathname === item.href 
-                        ? 'text-primary font-heading' 
+                      pathname === item.href
+                        ? 'text-primary font-heading'
                         : 'text-paragraph-black hover:text-primary'
                     }`}
+                    onClick={() => setIsSidebarOpen(false)}
                   >
                     {item.label}
                   </Link>
@@ -72,30 +66,27 @@ const Nav = () => {
               </li>
             ))}
           </ul>
-
           {/* Mobile Hamburger Button */}
           <button
-            onClick={toggleSidebar}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="lg:hidden p-2 focus:outline-none"
             aria-label="Toggle menu"
           >
-            <img 
-              src={hamburger} 
-              alt="Menu" 
+            <Image
+              src={hamburger}
+              alt="Menu"
               className="w-6 h-6 cursor-pointer"
             />
           </button>
         </nav>
       </header>
-
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-white/30 backdrop-blur-sm bg-opacity-50 z-[998] lg:hidden"
-          onClick={closeSidebar}
+          onClick={() => setIsSidebarOpen(false)}
         ></div>
       )}
-
       {/* Mobile Sidebar */}
       <div
         className={`fixed top-0 right-0 h-full w-60 bg-[#FFFFFF] transform ${
@@ -105,15 +96,15 @@ const Nav = () => {
         <div className="p-6">
           {/* Sidebar Header */}
           <div className="flex justify-between items-center mb-8">
-            <Link 
-              to="/" 
-              onClick={closeSidebar}
+            <Link
+              href="/"
+              onClick={() => setIsSidebarOpen(false)}
               className="font-heading text-h5 text-primary"
             >
               SEA Catering
             </Link>
             <button
-              onClick={closeSidebar}
+              onClick={() => setIsSidebarOpen(false)}
               className="p-1 focus:outline-none"
               aria-label="Close menu"
             >
@@ -122,7 +113,6 @@ const Nav = () => {
               </svg>
             </button>
           </div>
-
           {/* Sidebar Navigation */}
           <ul className="space-y-4">
             {navLinks.map((item) => (
@@ -130,7 +120,7 @@ const Nav = () => {
                 {item.href.startsWith('#') ? (
                   <a
                     href={item.href}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       handleNavClick(item.href);
                     }}
@@ -140,10 +130,10 @@ const Nav = () => {
                   </a>
                 ) : (
                   <Link
-                    to={item.href}
-                    onClick={closeSidebar}
+                    href={item.href}
+                    onClick={() => setIsSidebarOpen(false)}
                     className={`block px-4 py-2 rounded transition-colors cursor-pointer ${
-                      location.pathname === item.href
+                      pathname === item.href
                         ? 'text-primary bg-gray-100 font-heading'
                         : 'text-paragraph-black hover:text-primary hover:bg-gray-100'
                     }`}

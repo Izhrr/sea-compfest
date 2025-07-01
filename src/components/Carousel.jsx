@@ -1,8 +1,9 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
 
 const Carousel = ({
-  items = [],
-  renderItem,
+  children,
   itemsPerView = { mobile: 1, tablet: 2, desktop: 3 },
   autoplay = { enabled: true, delay: 5000, pauseOnHover: true },
   navigation = { showArrows: true, showDots: true },
@@ -13,7 +14,10 @@ const Carousel = ({
   const [isHovered, setIsHovered] = useState(false);
   const intervalRef = useRef(null);
 
-  // Responsive items per view
+  // Mengubah children menjadi array yang bisa diolah, ini adalah kunci dari pola komposisi
+  const items = React.Children.toArray(children);
+
+  // Efek untuk mengatur item yang tampil berdasarkan lebar layar (responsif)
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -25,56 +29,65 @@ const Carousel = ({
         setItemsToShow(itemsPerView.desktop);
       }
     };
-    handleResize();
+    
     window.addEventListener('resize', handleResize);
+    handleResize(); 
+
     return () => window.removeEventListener('resize', handleResize);
   }, [itemsPerView]);
 
-  // Auto-play functionality
   useEffect(() => {
-    if (autoplay.enabled && !isHovered && items.length > itemsToShow) {
-      intervalRef.current = setInterval(() => {
-        goToNext();
-      }, autoplay.delay);
+    if (!autoplay.enabled || isHovered || items.length <= itemsToShow) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      return;
     }
+
+    intervalRef.current = setInterval(() => {
+      goToNext();
+    }, autoplay.delay);
+
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
-    // eslint-disable-next-line
-  }, [autoplay, isHovered, items.length, itemsToShow, currentIndex]);
+  }, [autoplay, isHovered, items.length, itemsToShow, currentIndex]); 
 
-  // Berapa "slide" total: slide = halaman, per halaman = itemsToShow
-  const totalSlides = Math.ceil(items.length / itemsToShow);
-  const currentSlide = Math.floor(currentIndex / itemsToShow);
+  const totalSlides = items.length > 0 ? Math.ceil(items.length / itemsToShow) : 0;
+ 
+  const currentSlide = items.length > 0 ? Math.floor(currentIndex / itemsToShow) : 0;
 
-  // Geser per halaman
+ 
   const goToPrevious = () => {
-    setCurrentIndex(prevIndex => {
-      const prevSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-      return prevSlide * itemsToShow;
-    });
+    const newCurrentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    setCurrentIndex(newCurrentSlide * itemsToShow);
   };
+
 
   const goToNext = () => {
-    setCurrentIndex(prevIndex => {
-      const nextSlide = (currentSlide + 1) % totalSlides;
-      return nextSlide * itemsToShow;
-    });
+    const newCurrentSlide = (currentSlide + 1) % totalSlides;
+    setCurrentIndex(newCurrentSlide * itemsToShow);
+  };
+  
+  
+  const goToSlide = (slideIndex) => {
+    setCurrentIndex(slideIndex * itemsToShow);
   };
 
-  const goToSlide = (slideIdx) => {
-    setCurrentIndex(slideIdx * itemsToShow);
-  };
-
-  // Ambil item yang tampil di halaman ini (per halaman)
+  
   const getVisibleItems = () => {
-    const visible = [];
+    const visibleItems = [];
+    if (items.length === 0) return visibleItems;
+    
     for (let i = 0; i < itemsToShow; i++) {
-      // Looping jika sisa data tidak cukup
-      visible.push(items[(currentIndex + i) % items.length]);
+      const itemIndex = (currentIndex + i) % items.length;
+      visibleItems.push(items[itemIndex]);
     }
-    return visible;
+    return visibleItems;
   };
+  
 
   if (items.length === 0) {
     return <div className="text-center text-gray-500 py-8">No items to display</div>;
@@ -85,29 +98,32 @@ const Carousel = ({
       className={`relative w-full ${className}`}
       onMouseEnter={() => autoplay.pauseOnHover && setIsHovered(true)}
       onMouseLeave={() => autoplay.pauseOnHover && setIsHovered(false)}
-      style={{ minHeight: '370px' }} // Tinggi minimum agar efek card tidak terpotong
+      style={{ minHeight: '370px' }} 
     >
-      {/* Carousel Container */}
+      {/* Kontainer untuk item-item carousel */}
       <div className="overflow-visible rounded-2xl py-6 px-2 sm:px-4">
-        <div className="flex transition-transform duration-300 ease-in-out"
-          style={{ minHeight: 320 }}>
-          {getVisibleItems().map((item, idx) => (
+        <div 
+          className="flex transition-transform duration-300 ease-in-out" 
+          style={{ minHeight: 320 }}
+        >
+          {getVisibleItems().map((item, index) => (
             <div
-              key={item.id || idx}
+              key={item.key || index} 
               className="flex-shrink-0 px-4"
-              style={{ width: `calc(100%/${itemsToShow})` }}
+              style={{ width: `calc(100% / ${itemsToShow})` }}
             >
-              {renderItem(item, (currentIndex + idx) % items.length)}
+              {item}
             </div>
           ))}
         </div>
       </div>
-      {/* Navigation Arrows */}
+
+      {/* Tombol Panah Navigasi */}
       {navigation.showArrows && items.length > itemsToShow && (
         <>
           <button
             onClick={goToPrevious}
-            className="absolute -left-6 sm:-left-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group"
+            className="absolute -left-6 sm:-left-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group cursor-pointer"
             aria-label="Previous slide"
           >
             <svg className="w-6 h-6 text-primary group-hover:text-paragraph-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +132,7 @@ const Carousel = ({
           </button>
           <button
             onClick={goToNext}
-            className="absolute -right-6 sm:-right-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group"
+            className="absolute -right-6 sm:-right-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group cursor-pointer"
             aria-label="Next slide"
           >
             <svg className="w-6 h-6 text-primary group-hover:text-paragraph-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,7 +141,8 @@ const Carousel = ({
           </button>
         </>
       )}
-      {/* Dots Navigation */}
+
+      {/* Navigasi Dots */}
       {navigation.showDots && totalSlides > 1 && (
         <div className="flex justify-center mt-6 space-x-2">
           {Array.from({ length: totalSlides }).map((_, index) => (

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {tiktok, instagram, linkedin} from "../assets/icons"
 const Footer = () => {
   return (
@@ -8,13 +9,13 @@ const Footer = () => {
         </a>
         <div className="flex items-center gap-4">
           <a href="">
-            <img src={tiktok} alt="tiktok" />
+            <Image src={tiktok} alt="tiktok" />
           </a>
           <a href="">
-            <img src={instagram} alt="ig" />
+            <Image src={instagram} alt="ig" />
           </a>
           <a href="">
-            <img src={linkedin} alt="linkedin" />
+            <Image src={linkedin} alt="linkedin" />
           </a>
         </div>
       </div>
