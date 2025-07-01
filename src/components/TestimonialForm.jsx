@@ -87,7 +87,7 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
       <h2 className="font-heading text-h3 text-primary mb-2">Share Your Experience</h2>
       <div>
         <label className="block font-paragraph mb-1" htmlFor="customerName">
-          Name <span className="text-secondary-yellow">*</span>
+          Name <span className="text-red-500">*</span>
         </label>
         <input
           id="customerName"
@@ -108,7 +108,7 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
       </div>
       <div>
         <label className="block font-paragraph mb-1" htmlFor="reviewMessage">
-          Your Review <span className="text-secondary-yellow">*</span>
+          Your Review <span className="text-red-500">*</span>
         </label>
         <textarea
           id="reviewMessage"
@@ -129,7 +129,7 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
       </div>
       <div>
         <label className="block font-paragraph mb-1" htmlFor="rating">
-          Rating <span className="text-secondary-yellow">*</span>
+          Rating <span className="text-red-500">*</span>
         </label>
         <select
           id="rating"
