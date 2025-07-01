@@ -1,4 +1,4 @@
-import Image from 'next/image'; // Tambahkan impor untuk Image dari Next.js
+import Image from 'next/image';
 import {hero_meal} from "../assets/images"
 import {phone} from "../assets/icons"
 import {Button} from "../components"

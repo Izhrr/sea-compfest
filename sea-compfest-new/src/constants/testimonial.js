@@ -1,3 +1,4 @@
+//testimonials.js
 export const ratingOptions = [
     { value: 1, label: '1 Star', stars: '⭐' },
     { value: 2, label: '2 Stars', stars: '⭐⭐' },

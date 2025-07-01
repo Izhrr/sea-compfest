@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const MealPlanPopUp = ({ mealPlan, isOpen, onClose }) => {
@@ -36,7 +37,7 @@ const MealPlanPopUp = ({ mealPlan, isOpen, onClose }) => {
         <div className="p-6">
           {/* Image */}
           <div className="mb-6">
-            <img 
+            <Image
               src={mealPlan.image} 
               alt={mealPlan.name}
               className="w-full h-64 object-cover rounded-lg"

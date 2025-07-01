@@ -1,3 +1,4 @@
+//reviews.js
 import { star } from "../../public/assets/images";
 
 export const reviews = [

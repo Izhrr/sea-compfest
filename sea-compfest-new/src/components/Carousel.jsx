@@ -15,6 +15,19 @@ const Carousel = ({
   const [isHovered, setIsHovered] = useState(false);
   const intervalRef = useRef(null);
 
+  // Validasi renderItem di awal
+  if (!renderItem || typeof renderItem !== 'function') {
+    console.error('Carousel: renderItem prop must be a function');
+    return (
+      <div className="text-center text-red-500 py-8 border border-red-300 rounded-lg bg-red-50">
+        <div className="text-lg font-semibold mb-2">⚠️ Carousel Configuration Error</div>
+        <div className="text-sm">renderItem prop is required and must be a function</div>
+        <div className="text-xs text-red-400 mt-2">
+        </div>
+      </div>
+    );
+  }
+
   // Responsive items per view
   useEffect(() => {
     const handleResize = () => {
@@ -73,14 +86,19 @@ const Carousel = ({
     for (let i = 0; i < itemsToShow; i++) {
       visible.push({
         ...items[(currentIndex + i) % items.length],
-        uniqueKey: `${(currentIndex + i) % items.length}-${i}`, // Generate unique key
+        uniqueKey: `${(currentIndex + i) % items.length}-${i}`,
       });
     }
     return visible;
   };
 
   if (items.length === 0) {
-    return <div className="text-center text-gray-500 py-8">No items to display</div>;
+    return (
+      <div className="text-center text-gray-500 py-8">
+        <div className="text-lg mb-2">📋 No items to display</div>
+        <div className="text-sm">Please provide items array to display in carousel</div>
+      </div>
+    );
   }
 
   return (
@@ -102,15 +120,33 @@ const Carousel = ({
               className="flex-shrink-0 px-4"
               style={{ width: `calc(100%/${itemsToShow})` }}
             >
-              {typeof renderItem === 'function' ? (
-                renderItem(item, (currentIndex + idx) % items.length)
-              ) : (
-                <div className="text-red-500">Error: renderItem is not a function</div>
-              )}
+              {(() => {
+                try {
+                  // Double check renderItem sebelum memanggil
+                  if (typeof renderItem !== 'function') {
+                    return (
+                      <div className="text-red-500 border border-red-300 rounded p-4 bg-red-50">
+                        <div className="font-semibold">Error:</div>
+                        <div className="text-sm">renderItem is not a function</div>
+                      </div>
+                    );
+                  }
+                  return renderItem(item, (currentIndex + idx) % items.length);
+                } catch (error) {
+                  console.error('Error rendering carousel item:', error);
+                  return (
+                    <div className="text-red-500 border border-red-300 rounded p-4 bg-red-50">
+                      <div className="font-semibold">Render Error:</div>
+                      <div className="text-sm">{error.message}</div>
+                    </div>
+                  );
+                }
+              })()}
             </div>
           ))}
         </div>
       </div>
+      
       {/* Navigation Arrows */}
       {navigation.showArrows && items.length > itemsToShow && (
         <>
@@ -135,7 +171,7 @@ const Carousel = ({
           </button>
           <button
             onClick={goToNext}
-            className="absolute -right-6 sm:-right-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group"
+            className="absolute -right-6 sm:-right-10 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-100 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-200 z-10 group"
             aria-label="Next slide"
           >
             <svg
@@ -154,6 +190,7 @@ const Carousel = ({
           </button>
         </>
       )}
+      
       {/* Dots Navigation */}
       {navigation.showDots && totalSlides > 1 && (
         <div className="flex justify-center mt-6 space-x-2">
@@ -179,9 +216,20 @@ const Carousel = ({
 Carousel.propTypes = {
   items: PropTypes.array.isRequired,
   renderItem: PropTypes.func.isRequired,
-  itemsPerView: PropTypes.object,
-  autoplay: PropTypes.object,
-  navigation: PropTypes.object,
+  itemsPerView: PropTypes.shape({
+    mobile: PropTypes.number,
+    tablet: PropTypes.number,
+    desktop: PropTypes.number,
+  }),
+  autoplay: PropTypes.shape({
+    enabled: PropTypes.bool,
+    delay: PropTypes.number,
+    pauseOnHover: PropTypes.bool,
+  }),
+  navigation: PropTypes.shape({
+    showArrows: PropTypes.bool,
+    showDots: PropTypes.bool,
+  }),
   className: PropTypes.string,
 };
 
