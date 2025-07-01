@@ -23,7 +23,7 @@ const ContactPage = () => {
         </p>
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <div>
-            <label className="font-heading text-h5 text-paragraph-black font-bold" htmlFor="name">
+            <label className="font-subheading text-h5 text-paragraph-black font-bold" htmlFor="name">
               Name<span className="text-[#FF2626]">*</span>
             </label>
             <input
@@ -36,7 +36,7 @@ const ContactPage = () => {
             />
           </div>
           <div>
-            <label className="font-heading text-h5 text-paragraph-black font-bold" htmlFor="email">
+            <label className="font-subheading text-h5 text-paragraph-black font-bold" htmlFor="email">
               Email Address<span className="text-[#FF2626]">*</span>
             </label>
             <input
@@ -49,7 +49,7 @@ const ContactPage = () => {
             />
           </div>
           <div>
-            <label className="font-heading text-h5 text-paragraph-black font-bold" htmlFor="message">
+            <label className="font-subheading text-h5 text-paragraph-black font-bold" htmlFor="message">
               Your Message<span className="text-[#FF2626]">*</span>
             </label>
             <textarea
