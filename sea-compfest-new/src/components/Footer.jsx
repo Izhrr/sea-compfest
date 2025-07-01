@@ -1,4 +1,4 @@
-import {tiktok, instagram, linkedin} from "../../public/assets/icons"
+import {tiktok, instagram, linkedin} from "../assets/icons"
 const Footer = () => {
   return (
     <footer className="bg-primary px-10 py-5">

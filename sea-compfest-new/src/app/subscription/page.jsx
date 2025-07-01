@@ -1,7 +1,8 @@
+"use client";
 import React, { useState, useEffect } from 'react';
-import {planOptions, mealTypeOptions, deliveryDayOptions} from "../constants"
-import { Button } from '../components';
-import { subscriptionAPI } from '../services/api';
+import {planOptions, mealTypeOptions, deliveryDayOptions} from "../../constants"
+import { Button } from '../../components';
+import { subscriptionAPI } from '../../services/api';
 
 const SubscriptionPage = () => {
   // state utk form data
