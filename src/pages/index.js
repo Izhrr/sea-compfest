@@ -1,11 +1,11 @@
 import Contact from "./Contact";
 import MenuPage from "./MenuPage";
-import Subscription from "./Subscription";
+import SubscriptionPage from "./SubscriptionPage";
 import HomePage from "./HomePage";
 
 export {
     Contact,
     MenuPage,
-    Subscription,
+    SubscriptionPage,
     HomePage
 }

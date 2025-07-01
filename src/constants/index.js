@@ -96,3 +96,25 @@ export const mealPlans = [
         ]
     }
 ];
+
+export  const planOptions = [
+    { id: 'diet', name: 'Diet Plan', price: 30000, label: 'Diet Plan - Rp30.000,00 per meal' },
+    { id: 'protein', name: 'Protein Plan', price: 40000, label: 'Protein Plan - Rp40.000,00 per meal' },
+    { id: 'royal', name: 'Royal Plan', price: 60000, label: 'Royal Plan - Rp60.000,00 per meal' }
+  ];
+
+export const mealTypeOptions = [
+    { id: 'breakfast', name: 'Breakfast' },
+    { id: 'lunch', name: 'Lunch' },
+    { id: 'dinner', name: 'Dinner' }
+  ];
+
+export const deliveryDayOptions = [
+    { id: 'monday', name: 'Monday' },
+    { id: 'tuesday', name: 'Tuesday' },
+    { id: 'wednesday', name: 'Wednesday' },
+    { id: 'thursday', name: 'Thursday' },
+    { id: 'friday', name: 'Friday' },
+    { id: 'saturday', name: 'Saturday' },
+    { id: 'sunday', name: 'Sunday' }
+  ];

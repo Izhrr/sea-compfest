@@ -18,7 +18,7 @@ const Nav = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/menu", label: "Menu" },
-    { href: "#subscription", label: "Subscription" },
+    { href: "/subscription", label: "Subscription" },
     { href: "#contact-us", label: "Contact Us" },
   ];
 
@@ -114,29 +114,19 @@ const Nav = () => {
             </Link>
             <button
               onClick={closeSidebar}
-              className="p-2 focus:outline-none"
+              className="p-1 focus:outline-none"
               aria-label="Close menu"
             >
-              <svg
-                className="w-6 h-6 text-paragraph-black cursor-pointer"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
+              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Mobile Navigation Links */}
-          <nav className="space-y-6 font-paragraph">
+          {/* Sidebar Navigation */}
+          <ul className="space-y-4">
             {navLinks.map((item) => (
-              <div key={item.label} className="pb-2">
+              <li key={item.label}>
                 {item.href.startsWith('#') ? (
                   <a
                     href={item.href}
@@ -144,7 +134,7 @@ const Nav = () => {
                       e.preventDefault();
                       handleNavClick(item.href);
                     }}
-                    className="font-paragraph text-paragraph-black text-lg hover:opacity-80 transition-opacity block cursor-pointer"
+                    className="block px-4 py-2 text-paragraph-black hover:text-primary hover:bg-gray-100 rounded transition-colors cursor-pointer"
                   >
                     {item.label}
                   </a>
@@ -152,18 +142,18 @@ const Nav = () => {
                   <Link
                     to={item.href}
                     onClick={closeSidebar}
-                    className={`text-lg transition-opacity block cursor-pointer ${
-                      location.pathname === item.href 
-                        ? 'text-primary font-heading' 
-                        : 'text-paragraph-black hover:opacity-80'
+                    className={`block px-4 py-2 rounded transition-colors cursor-pointer ${
+                      location.pathname === item.href
+                        ? 'text-primary bg-gray-100 font-heading'
+                        : 'text-paragraph-black hover:text-primary hover:bg-gray-100'
                     }`}
                   >
                     {item.label}
                   </Link>
                 )}
-              </div>
+              </li>
             ))}
-          </nav>
+          </ul>
         </div>
       </div>
     </>
