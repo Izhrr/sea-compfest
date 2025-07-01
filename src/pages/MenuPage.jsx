@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MealPlanCard, MealPlanModal } from '../components';
+import { MealPlanCard, MealPlanPopUp } from '../components';
 import { mealPlans } from '../constants';
 
 const MenuPage = () => {
@@ -36,7 +36,7 @@ const MenuPage = () => {
         ))}
       </div>
 
-      <MealPlanModal
+      <MealPlanPopUp
         mealPlan={selectedMealPlan}
         isOpen={isModalOpen}
         onClose={handleCloseModal}

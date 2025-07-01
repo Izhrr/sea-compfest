@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MealPlanModal = ({ mealPlan, isOpen, onClose }) => {
+const MealPlanPopUp = ({ mealPlan, isOpen, onClose }) => {
   if (!isOpen || !mealPlan) return null;
 
   return (
@@ -99,4 +99,4 @@ const MealPlanModal = ({ mealPlan, isOpen, onClose }) => {
   );
 };
 
-export default MealPlanModal;
+export default MealPlanPopUp;

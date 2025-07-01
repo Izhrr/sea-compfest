@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import ReviewCard from "./ReviewCard";
 import ServiceCard from "./ServiceCard";
 import MealPlanCard from "./MealPlanCard";
-import MealPlanModal from "./MealPlanModal";
+import MealPlanPopUp from "./MealPlanPopUp";
 
 export {
     Button,
@@ -13,5 +13,5 @@ export {
     ReviewCard,
     ServiceCard,
     MealPlanCard,
-    MealPlanModal,
+    MealPlanPopUp,
 }

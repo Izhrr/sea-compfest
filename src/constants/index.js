@@ -41,7 +41,7 @@ export const mealPlans = [
     {
         id: 1,
         name: "Weight Loss Warrior",
-        price: "$50.00",
+        price: "Rp120.000,00",
         pricePerWeek: "(week)",
         description: "Achieve your weight loss goals with delicious, calorie-controlled meals designed for effective fat burning and sustained energy.",
         image: plan1,
@@ -60,7 +60,7 @@ export const mealPlans = [
     {
         id: 2,
         name: "Muscle Builder Pro",
-        price: "$60.00",
+        price: "Rp150.000,00",
         pricePerWeek: "(week)",
         description: "Fuel your gains with high-protein, perfectly portioned meals engineered for muscle growth and recovery. Optimized macros for peak performance.",
         image: plan2,
@@ -79,7 +79,7 @@ export const mealPlans = [
     {
         id: 3,
         name: "Busy Bee Balance",
-        price: "$70.00",
+        price: "Rp175.000,00",
         pricePerWeek: "(week)",
         description: "Save time without sacrificing health. Nutritious and convenient meals delivered daily, perfect for your demanding schedule.",
         image: plan3,
