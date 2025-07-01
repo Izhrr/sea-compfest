@@ -13,7 +13,7 @@ const Nav = () => {
     { href: "/", label: "Home" },
     { href: "/menu", label: "Menu" },
     { href: "/subscription", label: "Subscription" },
-    { href: "#contact-us", label: "Contact Us" },
+    { href: "/contact", label: "Contact Us" },
   ];
 
   const handleNavClick = (href) => {
