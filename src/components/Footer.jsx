@@ -1,10 +1,10 @@
 import {tiktok, instagram, linkedin} from "../assets/icons"
 const Footer = () => {
   return (
-    <footer className="bg-primary px-10 py-8">
-      <div className="flex justify-between">
+    <footer className="bg-primary px-10 py-5">
+      <div className="flex justify-between items-center">
         <a href="#home">
-          <p className="font-heading text-h4 leading-h4 text-secondary-yellow">SEA Catering</p>
+          <p className="font-heading text-h5 leading-h5 text-secondary-yellow">SEA Catering</p>
         </a>
         <div className="flex items-center gap-4">
           <a href="">

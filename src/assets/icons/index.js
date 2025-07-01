@@ -5,6 +5,7 @@ import linkedin from './linkedin.png'
 import meal from './meal.png'
 import phone from './phone.png'
 import tiktok from './tiktok.png'
+import hamburger from './hamburger.png'
 
 export {
     delivery,
@@ -14,4 +15,5 @@ export {
     meal,
     phone,
     tiktok,
+    hamburger,
 }

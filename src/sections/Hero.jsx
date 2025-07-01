@@ -6,9 +6,9 @@ const Hero = () => {
   return (
     <section
     id="home"
-    className="w-full bg-primary flex justify-between rounded-2xl z-10 overflow-hidden"
+    className="w-full bg-primary flex flex-col md:flex-row md:justify-between rounded-2xl z-10 overflow-hidden"
     >
-      <div className="text-white flex flex-col gap-10 px-15 justify-center">
+      <div className="text-white flex flex-col gap-10 px-15 justify-center py-10 w-full lg:w-1/2">
         <h1 className="font-heading text-h1">
           <span className=" text-secondary-yellow">Healthy Meals,</span>
           <br />
@@ -18,7 +18,7 @@ const Hero = () => {
           Experience the ultimate in healthy eating with personalized meal plans and nationwide delivery from SEA Catering.
         </p>
         <div className="mt-4">
-          <Button label='Explore Here!' />
+          <Button label='Explore Here!' href="#service" />
         </div>
         <p>
           <span className="font-heading text-h5 ">Any Questions?</span>
@@ -28,8 +28,8 @@ const Hero = () => {
           </div>
         </p>
       </div>
-      <div>
-        <img src={hero_meal} alt="meal" className="object-contain" />
+      <div className="w-full flex justify-end items-end">
+        <img src={hero_meal} alt="meal" className="object-contain w-full h-full max-h-80 lg:max-h-full object-bottom-right" />
       </div>
     </section>
   )

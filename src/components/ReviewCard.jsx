@@ -11,7 +11,7 @@ const ReviewCard = ({ratingImgURL, title, feedback, reviewerName}) => {
         </div>
       )}
 
-      <h3 className="font-subheading text-h4 leading-h4 text-paragraph-black"> {title}</h3>
+      <h3 className="font-subheading text-h5 leading-h5 text-paragraph-black"> {title}</h3>
 
       <p className="font-paragraph text-p3 leading-p3 text-paragraph-black"> 
         {feedback}
