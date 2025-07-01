@@ -1,6 +1,8 @@
 import { meal,delivery,information } from "../assets/icons";
 import { star,plan1,plan2,plan3 } from "../assets/images";
 
+export * from './testimonial';
+export * from './reviews';
 
 export const navLinks = [
     { href: "#home", label: "Home" },
