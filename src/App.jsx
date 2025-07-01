@@ -3,9 +3,9 @@ import {Nav, Footer} from "./components"
 
 const App = () => {
   return (
-    <main className="">
+    <main className="relative">
       <Nav />
-      <div className="mx-15">
+      <div className="mx-15 flex flex-col gap-20 mb-15">
         <section className="pt-16">
           <Hero />
         </section>

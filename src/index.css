@@ -124,7 +124,7 @@
     @apply sm:pb-24 pb-12;
   }
   .backdrop-blur-md {
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(50px);
     -webkit-backdrop-filter: blur(8px);
   }
 }
