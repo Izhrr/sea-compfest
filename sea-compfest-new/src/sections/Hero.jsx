@@ -1,5 +1,5 @@
-import {hero_meal} from "../assets/images"
-import {phone} from "../assets/icons"
+import {hero_meal} from "../../public/assets/images"
+import {phone} from "../../public/assets/icons"
 import {Button} from "../components"
 
 const Hero = () => {

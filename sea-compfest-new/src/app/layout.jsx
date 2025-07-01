@@ -1,21 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Nav, Footer } from "./components";
-import {HomePage, MenuPage, SubscriptionPage} from './pages';
+import './globals.css';
+import Nav from '../components/Nav';
+import Footer from '../components/Footer';
 
-const App = () => {
+export const metadata = {
+  title: 'SEA Catering',
+  description: 'Healthy Meals, Anytime Anywhere',
+};
+
+export default function RootLayout({ children }) {
   return (
-    <Router>
-      <main className="min-w-screen relative">
+    <html lang="en">
+      <body>
         <Nav />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/menu" element={<MenuPage />} />
-          <Route path="/subscription" element={<SubscriptionPage />} />
-        </Routes>
+        {children}
         <Footer />
-      </main>
-    </Router>
-  )
+      </body>
+    </html>
+  );
 }
-
-export default App

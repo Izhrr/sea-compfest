@@ -1,5 +1,5 @@
-import { meal,delivery,information } from "../assets/icons";
-import { star,plan1,plan2,plan3 } from "../assets/images";
+import { meal,delivery,information } from "../../public/assets/icons";
+import { star,plan1,plan2,plan3 } from "../../public/assets/images";
 
 export * from './testimonial';
 export * from './reviews';

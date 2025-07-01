@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react';
 import { Carousel, TestimonialForm } from '../components';
 import { testimonialAPI } from '../services/api';

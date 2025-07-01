@@ -1,3 +1,4 @@
+"use client";
 const Button = ({
   label,
   iconURL,
@@ -31,7 +32,6 @@ const Button = ({
       `}
     >
       {label}
-
       {iconURL && (
         <img
           src={iconURL}

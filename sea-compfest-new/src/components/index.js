@@ -6,7 +6,7 @@ import ServiceCard from "./ServiceCard";
 import MealPlanCard from "./MealPlanCard";
 import MealPlanPopUp from "./MealPlanPopUp";
 import ReviewCardEnhanced from "./ReviewCardEnhanced";
-import Carousel from "./Caorousel";
+import Carousel from "./Carousel";
 import TestimonialForm from "./TestimonialForm";
 
 export {

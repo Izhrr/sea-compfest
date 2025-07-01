@@ -1,5 +1,5 @@
 import {ServiceCard} from "../components"
-import {chef} from "../assets/images"
+import {chef} from "../../public/assets/images"
 import { services } from "../constants"
 
 const Service = () => {

@@ -1,4 +1,4 @@
-import { star } from "../assets/images";
+import { star } from "../../public/assets/images";
 
 export const reviews = [
     {
