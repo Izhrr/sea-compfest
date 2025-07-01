@@ -147,7 +147,7 @@ const SubscriptionPage = () => {
         if (firstErrorElement) {
           firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 100);
+      }, 6000);
       return;
     }
 
@@ -159,7 +159,6 @@ const SubscriptionPage = () => {
     setIsLoading(true);
     setSubmitStatus('');
     try {
-      // === KIRIM KE API DAN TANGANI RESPON ===
       const response = await subscriptionAPI.create(subscriptionData);
       if (response.success) {
         setErrors({});
@@ -169,7 +168,7 @@ const SubscriptionPage = () => {
           if (successElement) {
             successElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
-        }, 100);
+        }, 3000);
         setTimeout(() => {
           setFormData({
             name: '',

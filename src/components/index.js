@@ -8,6 +8,7 @@ import MealPlanPopUp from "./MealPlanPopUp";
 import ReviewCardEnhanced from "./ReviewCardEnhanced";
 import Carousel from "./Carousel";
 import TestimonialForm from "./TestimonialForm";
+import RegisterForm from "./RegisterForm";
 
 export {
     Button,
@@ -20,4 +21,5 @@ export {
     ReviewCardEnhanced,
     Carousel,
     TestimonialForm,
+    RegisterForm,
 }

@@ -9,6 +9,7 @@ const SubscriptionSchema = new mongoose.Schema({
   allergies: String,
   totalPrice: Number,
   status: { type: String, default: "pending" },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

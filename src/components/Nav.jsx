@@ -1,13 +1,16 @@
 "use client";
 import Image from 'next/image';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { hamburger } from "../assets/icons";
+import { useAuth } from "../contexts/AuthContext";
 
 const Nav = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, handleLogout } = useAuth();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -17,7 +20,7 @@ const Nav = () => {
   ];
 
   const handleNavClick = (href) => {
-    // Untuk anchor link (#) hanya berlaku di halaman home
+    
     if (href.startsWith('#') && pathname === '/') {
       const element = document.querySelector(href);
       if (element) {
@@ -25,6 +28,12 @@ const Nav = () => {
       }
     }
     setIsSidebarOpen(false);
+  };
+
+  const handleLogoutClick = async () => {
+    await handleLogout();
+    setIsSidebarOpen(false);
+    router.push('/login');
   };
 
   return (
@@ -65,6 +74,51 @@ const Nav = () => {
                 )}
               </li>
             ))}
+            {/* Auth related links */}
+            {user ? (
+              <>
+                <li>
+                  <span className="font-paragraph text-paragraph-black">
+                    Hi, {user.fullName?.split(" ")[0] || "User"}
+                  </span>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogoutClick}
+                    className="font-paragraph text-paragraph-black hover:text-primary transition-colors cursor-pointer bg-transparent border-none"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    href="/login"
+                    className={`transition-colors cursor-pointer ${
+                      pathname === "/login"
+                        ? 'text-primary font-heading'
+                        : 'text-paragraph-black hover:text-primary'
+                    }`}
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/register"
+                    className={`transition-colors cursor-pointer ${
+                      pathname === "/register"
+                        ? 'text-primary font-heading'
+                        : 'text-paragraph-black hover:text-primary'
+                    }`}
+                  >
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
           {/* Mobile Hamburger Button */}
           <button
@@ -143,6 +197,53 @@ const Nav = () => {
                 )}
               </li>
             ))}
+            {/* Auth related links */}
+            {user ? (
+              <>
+                <li>
+                  <span className="block px-4 py-2 text-paragraph-black">
+                    Hi, {user.fullName?.split(" ")[0] || "User"}
+                  </span>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogoutClick}
+                    className="block px-4 py-2 text-paragraph-black hover:text-primary hover:bg-gray-100 rounded transition-colors cursor-pointer bg-transparent border-none w-full text-left"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    href="/login"
+                    onClick={() => setIsSidebarOpen(false)}
+                    className={`block px-4 py-2 rounded transition-colors cursor-pointer ${
+                      pathname === "/login"
+                        ? 'text-primary bg-gray-100 font-heading'
+                        : 'text-paragraph-black hover:text-primary hover:bg-gray-100'
+                    }`}
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/register"
+                    onClick={() => setIsSidebarOpen(false)}
+                    className={`block px-4 py-2 rounded transition-colors cursor-pointer ${
+                      pathname === "/register"
+                        ? 'text-primary bg-gray-100 font-heading'
+                        : 'text-paragraph-black hover:text-primary hover:bg-gray-100'
+                    }`}
+                  >
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
