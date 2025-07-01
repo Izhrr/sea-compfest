@@ -1,6 +1,7 @@
+"use client";
 import React, { useState } from "react";
 import { ratingOptions, testimonialFormMessages, testimonialFormConfig } from "../constants";
-import { Button } from "../components";
+import { Button } from ".";
 
 const initialForm = {
   customerName: "",
@@ -77,7 +78,6 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
     }
   };
 
-  // Handle button click - PERBAIKAN UTAMA
   const handleButtonClick = (e) => {
     e.preventDefault();
     handleSubmit(e);
@@ -91,7 +91,6 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
       aria-label="Testimonial Form"
     >
       <h2 className="font-heading text-h3 text-primary mb-2">Share Your Experience</h2>
-      
       <div>
         <label className="block font-paragraph mb-1" htmlFor="customerName">
           Name <span className="text-red-500">*</span>
@@ -115,7 +114,6 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
           <p className="text-xs text-red-500 mt-1">{error.customerName}</p>
         )}
       </div>
-      
       <div>
         <label className="block font-paragraph mb-1" htmlFor="reviewMessage">
           Your Review <span className="text-red-500">*</span>
@@ -144,7 +142,6 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
           </p>
         </div>
       </div>
-      
       <div>
         <label className="block font-paragraph mb-1" htmlFor="rating">
           Rating <span className="text-red-500">*</span>
@@ -171,13 +168,12 @@ const TestimonialForm = ({ onSubmit, isSubmitting = false }) => {
           <p className="text-xs text-red-500 mt-1">{error.rating}</p>
         )}
       </div>
-
       {/* Success Message */}
       {success && (
         <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg animate-fadeIn">
           <div className="flex items-center">
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
             </svg>
             <span className="font-semibold">Success!</span>
           </div>

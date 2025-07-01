@@ -1,11 +1,12 @@
-import { Button } from "./";
+import Image from 'next/image';
+import { Button } from ".";
 
 const MealPlanCard = ({ mealPlan, onMoreInfo }) => {
   return (
     <div className="flex flex-col bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 max-w-sm mx-auto">
       {/* Image Section */}
       <div className="h-64 overflow-hidden">
-        <img 
+        <Image 
           src={mealPlan.image} 
           alt={mealPlan.name}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
