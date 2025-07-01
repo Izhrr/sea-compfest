@@ -75,15 +75,6 @@ NEXT_PUBLIC_API_BASE_URL=/api
 - **TailwindCSS 4** - Utility-first CSS framework
 - **Axios** - HTTP client for API requests
 
-## Migration Notes
-
-This project was successfully migrated from Vite React to Next.js with the following key changes:
-- Converted from React Router to Next.js App Router
-- Updated import paths and asset management
-- Converted Express API routes to Next.js API route handlers
-- Added proper "use client" directives for client-side components
-- Updated environment variable format for Next.js
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
