@@ -8,7 +8,7 @@ const Service = () => {
       <div className="flex justify-center w-full lg:w-1/2 order-2 md:order-1">
         <img src={chef} alt="chef" className="object-contain items-center object-bottom-right" />
       </div>
-      <div className="w-full lg:w-1/2 pr-10 flex flex-col gap-20">
+      <div className="w-full lg:w-1/2 pr-10 flex flex-col gap-20 md:order-2">
         <h1 className="font-heading text-h1 text-primary">
           Why should you use our service?
         </h1>
