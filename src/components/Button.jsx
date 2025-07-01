@@ -4,7 +4,7 @@ const Button = ({
   backgroundColor,
   textColor,
   borderColor,
-  fullWidth, // Ini prop yang mengontrol apakah tombol full width atau tidak
+  fullWidth,
 }) => {
   return (
     <button
@@ -16,7 +16,7 @@ const Button = ({
             ? `${backgroundColor} ${textColor} ${borderColor}`
             : "bg-secondary-yellow text-primary border-transparent"
         }
-        ${fullWidth ? "w-full" : "w-auto"} // Perubahan di sini: Lebih eksplisit dengan w-auto
+        ${fullWidth ? "w-full" : "w-auto"}
       `}
     >
       {label}
